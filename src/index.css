@@ -1,0 +1,11 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%; /* 부모 요소 높이 100% */
+}
+
+#root {
+  height: 100%; /* React 앱의 루트 높이도 100%로 설정 */
+}
