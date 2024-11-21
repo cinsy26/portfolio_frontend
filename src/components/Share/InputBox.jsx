@@ -4,36 +4,50 @@ import styled from "styled-components";
 const Box = styled.div`
   width: 350px;
   height: 90px;
-  margin-top: 5px;
+  margin-top: 30px;
+  box-sizing: border-box;
 
   display: flex; /* Flexbox 활성화 */
   flex-direction: column; /* 세로 정렬 */
   align-items: flex-start;
 `;
 
-const Input = styled.div`
+const Input = styled.input`
   width: 350px;
   height: 50px;
   flex-shrink: 0;
   border-radius: 10px;
-  border: 2px solid #000;
+  border: 2px solid #000; /* 기본 테두리 */
   background: #fdfbf8;
+  padding: 10px; /* 내부 여백 */
+  font-size: 16px; /* 입력 글씨 크기 */
+
+  box-sizing: border-box;
+
+  /* focus 상태에서도 border 색상 유지 */
+  &:focus {
+    outline: none; /* 기본 outline 제거 */
+    border: 2px solid #000; /* 테두리 색상 고정 */
+  }
 `;
 
 const Text = styled.div`
+  width: auto;
+  height: 40px;
+  flex-shrink: 0;
   color: #000;
   font-family: Roboto;
-  font-size: 24px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: 40px;
+  line-height: 40px; /* 200% */
 `;
 
-export default function InputBox({ label }) {
+export default function InputBox({ label, type = "text", placeholder = "" }) {
   return (
     <Box>
       <Text>{label}</Text>
-      <Input></Input>
+      <Input type={type} placeholder={placeholder} />
     </Box>
   );
 }
