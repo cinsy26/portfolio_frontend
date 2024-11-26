@@ -8,6 +8,7 @@ const Box = styled.div`
   flex-shrink: 0;
   border-radius: 50px;
   background: #4a4e4d;
+  cursor: pointer;
 
   display: flex; /* Flexbox로 정렬 */
   justify-content: center; /* Box를 수평 중앙 정렬 */

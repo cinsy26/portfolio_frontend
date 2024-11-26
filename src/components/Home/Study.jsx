@@ -7,6 +7,7 @@ const Box = styled.div`
   height: 175px;
   border-radius: 50px;
   background: #e29f91;
+  cursor: pointer;
 
   &:hover {
     background: #f3b5a6; /* 배경색 변경 */

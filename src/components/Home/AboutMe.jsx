@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Box = styled.div`
   display: flex;
@@ -7,6 +8,7 @@ const Box = styled.div`
   height: 359px;
   border-radius: 50px;
   background: #f6d7d2;
+  cursor: pointer;
 
   &:hover {
     background: #f8e0da; /* 배경색 변경 */
@@ -26,8 +28,13 @@ const Text = styled.div`
 `;
 
 export default function AboutMe() {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/aboutme");
+  };
   return (
-    <Box>
+    <Box onClick={handleNavigate}>
       <Text>About Me</Text>
     </Box>
   );

@@ -8,6 +8,7 @@ const Box = styled.div`
   flex-shrink: 0;
   border-radius: 50px;
   background: #aabda2;
+  cursor: pointer;
 
   &:hover {
     background-image: url(${StorageBackground});

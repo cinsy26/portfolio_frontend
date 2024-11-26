@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Box = styled.div`
   display: flex;
@@ -7,6 +8,7 @@ const Box = styled.div`
   height: 500px;
   border-radius: 50px;
   background: #aabda2;
+  cursor: pointer;
 
   &:hover {
     box-shadow: 8px 8px 15px 0px rgba(0, 0, 0, 0.3);
@@ -26,8 +28,13 @@ const Text = styled.div`
 `;
 
 export default function Project() {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/project");
+  };
   return (
-    <Box>
+    <Box onClick={handleNavigate}>
       <Text>Project</Text>
     </Box>
   );
