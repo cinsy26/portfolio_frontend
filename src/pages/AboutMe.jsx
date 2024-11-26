@@ -99,6 +99,7 @@ const PlusIcon = styled.img`
   width: 30px;
   height: 30px;
   cursor: pointer;
+  margin-bottom: 20px;
 `;
 
 const Overlay = styled.div`
@@ -121,7 +122,6 @@ export default function AboutMe() {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
   return (
     <Background>
       <Box>
@@ -161,11 +161,10 @@ export default function AboutMe() {
 
         <Right></Right>
       </Box>
-
       {showModal && (
         <>
-          <Overlay onClick={handleCloseModal} /> {/* 배경 클릭 시 닫기 */}
-          <TimelineModal />
+          <Overlay onClick={handleCloseModal} />
+          <TimelineModal onClose={handleCloseModal} />
         </>
       )}
     </Background>
