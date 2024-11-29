@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import closeicon from "../../assets/icon/close.png";
+import { createActivity } from "../../api/AboutMe/Timeline";
 
 const Modal = styled.div`
   position: fixed; /* 화면 고정 */
@@ -155,6 +156,7 @@ export default function TimelineModal({ onClose }) {
   const [isOngoing, setIsOngoing] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [content, setContent] = useState("");
 
   const handleCheckboxChange = () => {
     setIsOngoing((prev) => !prev);
@@ -183,6 +185,22 @@ export default function TimelineModal({ onClose }) {
 
   const handleEndDateBlur = () => {
     setEndDate(formatDate(endDate)); // 포맷 적용
+  };
+
+  const handleSubmit = async () => {
+    const activityData = {
+      startdate: startDate,
+      enddate: isOngoing ? null : endDate, // "진행중"이면 종료 날짜는 null
+      content,
+    };
+
+    try {
+      await createActivity(activityData); // API 호출
+      alert("활동이 성공적으로 추가되었습니다!");
+      onClose(); // 모달 닫기
+    } catch (error) {
+      alert("활동 추가에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -215,7 +233,10 @@ export default function TimelineModal({ onClose }) {
         </DateContent>
         <SubText>내용</SubText>
         <Content>
-          <ContentInput></ContentInput>
+          <ContentInput
+            value={content}
+            onChange={(e) => setContent(e.target.value)} // 입력값 상태 저장
+          />{" "}
         </Content>
         <PlusButton onClick={onClose}>추가</PlusButton>
       </Box>
