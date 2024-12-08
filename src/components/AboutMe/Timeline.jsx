@@ -40,13 +40,34 @@ const Text = styled.div`
   line-height: normal;
 `;
 
-export default function TimelineComponent({ date, content }) {
+const EmptyMessage = styled.div`
+  text-align: center;
+  color: #4a4e4d;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 20px;
+`;
+
+export default function TimelineComponent({ activities }) {
   return (
-    <Container>
-      <DateText>{date}</DateText>
-      <Content>
-        <Text>{content}</Text>
-      </Content>
-    </Container>
+    <div>
+      {activities && activities.length > 0 ? (
+        activities.map((activity) => (
+          <Container key={activity.id}>
+            <DateText>
+              {activity.startdate} - {activity.enddate}
+            </DateText>
+            <Content>
+              <Text>{activity.content}</Text>
+            </Content>
+          </Container>
+        ))
+      ) : (
+        <EmptyMessage>현재 표시할 활동이 없습니다.</EmptyMessage>
+      )}
+    </div>
   );
 }

@@ -158,9 +158,22 @@ export default function TimelineModal({ onClose }) {
   const [endDate, setEndDate] = useState("");
   const [content, setContent] = useState("");
 
+  const getCurrentDate = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1
+    const day = String(now.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`; // YYYY-MM-DD 형식 반환
+  };
+
   const handleCheckboxChange = () => {
-    setIsOngoing((prev) => !prev);
-    if (!isOngoing) setEndDate(""); // "진행중" 체크 시 끝 날짜 초기화
+    const isNowOngoing = !isOngoing; // 체크박스 상태 반전
+    setIsOngoing(isNowOngoing);
+    if (isNowOngoing) {
+      setEndDate(getCurrentDate()); // "진행중" 체크 시 오늘 날짜로 설정
+    } else {
+      setEndDate(""); // 체크 해제 시 초기화
+    }
   };
 
   const formatDate = (value) => {
@@ -170,11 +183,11 @@ export default function TimelineModal({ onClose }) {
     const day = cleaned.substring(6, 8);
 
     if (cleaned.length >= 8) {
-      return `${year}.${month}.${day}`;
+      return `${year}-${month}-${day}`; // YYYY-MM-DD 형식
     } else if (cleaned.length >= 6) {
-      return `${year}.${month}`;
+      return `${year}-${month}`; // YYYY-MM 형식
     } else if (cleaned.length >= 4) {
-      return `${year}`;
+      return `${year}`; // YYYY 형식
     }
     return cleaned;
   };
@@ -189,17 +202,19 @@ export default function TimelineModal({ onClose }) {
 
   const handleSubmit = async () => {
     const activityData = {
-      startdate: startDate,
-      enddate: isOngoing ? null : endDate, // "진행중"이면 종료 날짜는 null
+      startdate: formatDate(startDate), // 포맷팅 적용
+      enddate: isOngoing ? getCurrentDate() : formatDate(endDate), // "진행중"이면 오늘 날짜, 아니면 포맷팅
       content,
     };
 
+    console.log("Sending activity data:", activityData); // 디버깅용
     try {
       await createActivity(activityData); // API 호출
       alert("활동이 성공적으로 추가되었습니다!");
       onClose(); // 모달 닫기
     } catch (error) {
       alert("활동 추가에 실패했습니다. 다시 시도해주세요.");
+      console.error("Error while creating activity:", error);
     }
   };
 
@@ -236,9 +251,9 @@ export default function TimelineModal({ onClose }) {
           <ContentInput
             value={content}
             onChange={(e) => setContent(e.target.value)} // 입력값 상태 저장
-          />{" "}
+          />
         </Content>
-        <PlusButton onClick={onClose}>추가</PlusButton>
+        <PlusButton onClick={handleSubmit}>추가</PlusButton>
       </Box>
       <Right>
         <CloseIcon src={closeicon} onClick={onClose} />

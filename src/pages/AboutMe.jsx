@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import MyInfo from "../components/AboutMe/MyInfo";
 import Icon from "../components/Share/Icon";
@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import TimelineComponent from "../components/AboutMe/Timeline";
 import plusicon from "../assets/icon/plus.png";
 import TimelineModal from "../components/AboutMe/TimelineModal";
+import { createActivity, fetchActivities } from "../api/AboutMe/Timeline";
 
 const Background = styled.div`
   width: 100vw;
@@ -114,6 +115,7 @@ const Overlay = styled.div`
 
 export default function AboutMe() {
   const [showModal, setShowModal] = useState(false);
+  const [activities, setActivities] = useState([]); // 활동 데이터 상태 관리
 
   const handlePlusIconClick = () => {
     setShowModal(true);
@@ -122,6 +124,21 @@ export default function AboutMe() {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+  // API 호출: 활동 데이터를 가져오는 함수
+  const fetchActivityData = async () => {
+    try {
+      const response = await fetchActivities(); // fetchActivities 함수 호출
+      setActivities(response); // 받아온 데이터를 상태에 저장
+    } catch (error) {
+      console.error("Failed to fetch activities:", error);
+    }
+  };
+
+  // 컴포넌트가 렌더링될 때 데이터를 가져옴
+  useEffect(() => {
+    fetchActivityData();
+  }, [showModal]);
+
   return (
     <Background>
       <Box>
@@ -139,14 +156,7 @@ export default function AboutMe() {
             <Line />
             <Timeline>
               <TitleText>Timeline</TitleText>
-              <TimelineComponent
-                date="2022.03.02 - 현재"
-                content="This is a timeline event."
-              />
-              <TimelineComponent
-                date="2024.03.02 - 2024.08.23"
-                content="Another timeline event."
-              />
+              <TimelineComponent activities={activities} /> {/* 데이터 전달 */}
             </Timeline>
             <PlusIconWrapper>
               <PlusIcon
